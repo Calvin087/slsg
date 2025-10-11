@@ -4,6 +4,9 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@types/aws-lambda": "^8.10.155"
+    "@aws-sdk/client-dynamodb": "^3.908.0",
+    "@aws-sdk/lib-dynamodb": "^3.908.0",
+    "@types/aws-lambda": "^8.10.155",
+    "zod": "^4.1.12"
   }
 }
