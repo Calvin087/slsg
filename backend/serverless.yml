@@ -1,0 +1,139 @@
+org: torracodes
+app: slsgbackend
+service: slsbackend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-central-1
+  stage: ${opt:stage, 'dev'}
+  logRetentionInDays: 7
+  apiGateway:
+    restApiId: { Ref: ApiGatewayRestApi }
+    stageName: ${self:provider.stage}
+  environment:
+    TABLE_NAME: ${self:service}-grants-${self:provider.stage} #TODO: slsbackend-x-dev/staging/prod need to add options
+    USER_POOL_ID: !Ref CognitoUserPool
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - !GetAtt GrantsTable.Arn
+
+custom:
+  corsSettings:
+    origin:
+      - http://localhost:5173
+      - https://notsurewhatyouareyet.com
+    headers:
+      - Content-Type
+      - Authorization
+    allowCredentials: true
+
+functions:
+  createGrant:
+    handler: handler.createGrant
+    events:
+      - http:
+          path: /grants
+          method: post
+          restApiId:
+            Ref: ApiGatewayRestApi
+          cors: ${self:custom.corsSettings}
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+  getGrant:
+    handler: handler.getGrant
+    events:
+      - http:
+          path: /grants/{id}
+          method: get
+          restApiId:
+            Ref: ApiGatewayRestApi
+          cors: ${self:custom.corsSettings}
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+  updateGrant:
+    handler: handler.updateGrant
+    events:
+      - http:
+          path: /grants/{id}
+          method: put
+          restApiId:
+            Ref: ApiGatewayRestApi
+          cors: ${self:custom.corsSettings}
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+  deleteGrant:
+    handler: handler.deleteGrant
+    events:
+      - http:
+          path: /grants/{id}
+          method: delete
+          restApiId:
+            Ref: ApiGatewayRestApi
+          cors: ${self:custom.corsSettings}
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:service}-${self:provider.stage}-api
+    GrantsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: userSubId
+            AttributeType: S
+          - AttributeName: grantId
+            AttributeType: S
+        # Ideally fetch all items a user has using PK without full table scan
+        KeySchema:
+          - AttributeName: userSubId
+            AttributeType: HASH
+          - AttributeName: grantId
+            AttributeType: RANGE
+        BillingMode: PAY_PER_REQUEST
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:service}-user-pool-${self:provider.stage}
+        AutoVerifiedAttributes: [email]
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:service}-client-${self:provider.stage}
+        GenerateSecret: false
+        UserPoolId: !Ref CognitoUserPool
+
+    ApiGatewayAuthorizer:
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: cognito-authorizer
+        Type: COGNITO_USER_POOLS
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        IdentitySource: method.request.header.Authorization
+        ProviderARNs:
+          - !GetAtt CognitoUserPool.Arn
