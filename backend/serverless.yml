@@ -9,21 +9,13 @@ provider:
   profile: slsguruadmin
   stage: ${opt:stage, 'dev'}
   logRetentionInDays: 7
-  apiGateway:
-    restApiId: { Ref: ApiGatewayRestApi }
-    stageName: ${self:provider.stage}
   environment:
     TABLE_NAME: ${self:service}-grants-${self:provider.stage} #TODO: slsbackend-x-dev/staging/prod need to add options
     USER_POOL_ID: !Ref CognitoUserPool
 
-plugins:
-  - serverless-plugin-typescript
-
 custom:
   corsSettings:
-    origin:
-      - http://localhost:5173
-      - https://notsurewhatyouareyet.com
+    origin: http://localhost:5173,https://notsurewhatyouareyet.com
     headers:
       - Content-Type
       - Authorization
@@ -36,8 +28,6 @@ functions:
       - http:
           path: /grants/{id}
           method: get
-          restApiId:
-            Ref: ApiGatewayRestApi
           cors: ${self:custom.corsSettings}
           authorizer:
             type: COGNITO_USER_POOLS
@@ -57,8 +47,6 @@ functions:
       - http:
           path: /grants
           method: post
-          restApiId:
-            Ref: ApiGatewayRestApi
           cors: ${self:custom.corsSettings}
           authorizer:
             type: COGNITO_USER_POOLS
@@ -78,8 +66,6 @@ functions:
       - http:
           path: /grants/{id}
           method: put
-          restApiId:
-            Ref: ApiGatewayRestApi
           cors: ${self:custom.corsSettings}
           authorizer:
             type: COGNITO_USER_POOLS
@@ -99,8 +85,6 @@ functions:
       - http:
           path: /grants/{id}
           method: delete
-          restApiId:
-            Ref: ApiGatewayRestApi
           cors: ${self:custom.corsSettings}
           authorizer:
             type: COGNITO_USER_POOLS
@@ -119,9 +103,10 @@ resources:
     ApiGatewayRestApi:
       Type: AWS::ApiGateway::RestApi
       Properties:
-        Name: ${self:service}-${self:provider.stage}-api
+        Name: ${self:service}-api-${self:provider.stage}
     GrantsTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Delete
       Properties:
         TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
@@ -132,9 +117,9 @@ resources:
         # Ideally fetch all items a user has using PK without full table scan
         KeySchema:
           - AttributeName: userSubId
-            AttributeType: HASH
+            KeyType: HASH
           - AttributeName: grantId
-            AttributeType: RANGE
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
 
     CognitoUserPool:
