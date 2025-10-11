@@ -31,7 +31,7 @@ custom:
 
 functions:
   getGrant:
-    handler: handler.getGrant
+    handler: src/features/grants/lambdas/getGrant.handler
     events:
       - http:
           path: /grants/{id}
@@ -52,7 +52,7 @@ functions:
             Resource: !GetAtt GrantsTable.Arn
 
   createGrant:
-    handler: handler.createGrant
+    handler: src/features/grants/lambdas/createGrant.handler
     events:
       - http:
           path: /grants
@@ -73,7 +73,7 @@ functions:
             Resource: !GetAtt GrantsTable.Arn
 
   updateGrant:
-    handler: handler.updateGrant
+    handler: src/features/grants/lambdas/updateGrant.handler
     events:
       - http:
           path: /grants/{id}
@@ -94,7 +94,7 @@ functions:
             Resource: !GetAtt GrantsTable.Arn
 
   deleteGrant:
-    handler: handler.deleteGrant
+    handler: src/features/grants/lambdas/deleteGrant.handler
     events:
       - http:
           path: /grants/{id}
