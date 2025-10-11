@@ -24,6 +24,9 @@ provider:
       Resource:
         - !GetAtt GrantsTable.Arn
 
+plugins:
+  - serverless-plugin-typescript
+
 custom:
   corsSettings:
     origin:
