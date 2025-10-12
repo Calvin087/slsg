@@ -41,6 +41,25 @@ functions:
               - dynamodb:GetItem
             Resource: !GetAtt GrantsTable.Arn
 
+  getGrantsByUserId:
+    handler: src/features/grants/lambdas/getGrantsByUserId.handler
+    events:
+      - http:
+          path: /users/{userId}/grants
+          method: get
+          cors: ${self:custom.corsSettings}
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+    iam:
+      role:
+        statements:
+          - Effect: Allow
+            Action:
+              - dynamodb:Query
+            Resource: !GetAtt GrantsTable.Arn
+
   createGrant:
     handler: src/features/grants/lambdas/createGrant.handler
     events:

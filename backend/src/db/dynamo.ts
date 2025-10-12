@@ -12,6 +12,7 @@ import {
   GrantSchema,
   GrantUpdate,
   GrantUpdateSchema,
+  PublicGrant,
 } from "../schemas/GrantSchema";
 
 const client = new DynamoDBClient({});
@@ -36,15 +37,18 @@ export const DynamoAdapter = {
   getItem: async (
     userSubId: string,
     grantId: string,
-  ): Promise<Grant | undefined> => {
+  ): Promise<PublicGrant | undefined> => {
     const res = await ddb.send(
       new GetCommand({ TableName: TABLE_NAME, Key: { userSubId, grantId } }),
     );
 
-    return res.Item ? GrantSchema.parse(res.Item) : undefined;
+    if (!res.Item) return undefined;
+
+    const { userSubId: _, ...rest } = GrantSchema.parse(res.Item);
+    return rest;
   },
 
-  queryByUserId: async (userSubId: string): Promise<Grant[]> => {
+  queryByUserId: async (userSubId: string): Promise<PublicGrant[]> => {
     const res = await ddb.send(
       new QueryCommand({
         TableName: TABLE_NAME,
@@ -53,7 +57,9 @@ export const DynamoAdapter = {
       }),
     );
 
-    return (res.Items || []).map((item) => GrantSchema.parse(item));
+    return (res.Items || [])
+      .map((item) => GrantSchema.parse(item))
+      .map(({ userSubId, ...rest }) => rest);
   },
 
   updateItem: async (

@@ -15,7 +15,7 @@ const deleteGrant = async (
     await DynamoAdapter.delete(userSubId, grantId);
 
     return {
-      statusCode: 200,
+      statusCode: 204,
       body: JSON.stringify({ message: "Grant deleted" }),
     };
   } catch (error) {
