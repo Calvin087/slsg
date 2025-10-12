@@ -32,11 +32,19 @@ const createGrant = async (
 
     return {
       statusCode: 201,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Grant Created" }),
     };
   } catch (error) {
     return {
       statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Failed to create grant", error: error }),
     };
   }

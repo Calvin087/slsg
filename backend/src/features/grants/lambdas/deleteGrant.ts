@@ -16,11 +16,19 @@ const deleteGrant = async (
 
     return {
       statusCode: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Grant deleted" }),
     };
   } catch (error) {
     return {
       statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Failed to delete grant", error }),
     };
   }

@@ -15,6 +15,10 @@ const updateGrant = async (
   if (!event.body) {
     return {
       statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Missing request body" }),
     };
   }
@@ -32,11 +36,19 @@ const updateGrant = async (
 
     return {
       statusCode: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Grant Updated" }),
     };
   } catch (error) {
     return {
       statusCode: 400,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "Failed to update grant", error: error }),
     };
   }
