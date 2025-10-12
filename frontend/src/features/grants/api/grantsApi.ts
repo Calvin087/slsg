@@ -28,7 +28,8 @@ export const getGrantsByUserId = async () => {
       .catch(() => ({ message: "Unknown error during fetch Grants" }));
     throw new Error(errorData.message || "Failed to fetch user Grants");
   }
-  return response.json();
+  const { data } = await response.json();
+  return data;
 };
 
 export const createGrant = async (grant: any) => {
