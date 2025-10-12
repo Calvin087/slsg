@@ -12,39 +12,71 @@ const GrantsTable = ({ allGrants, onEditGrant, onDeleteGrant }: Props) => {
   const { getDaysLeft } = useGrantTable();
 
   return (
-    <table className="w-full border-collapse text-sm">
-      <tbody>
-        {allGrants.length === 0 ? (
-          <tr>
-            <td colSpan={7} className="text-center text-gray-500 p-6 italic">
-              No opportunities found.
-            </td>
+    <div className="overflow-x-auto rounded-t-sm">
+      <table className="w-full border-collapse text-sm">
+        <thead className="bg-indigo-50 text-indigo-900">
+          <tr className="border-b-[0.25px] border-indigo-900/80 text-xs">
+            {[
+              "Title",
+              "Category",
+              "Deadline",
+              "Days Left",
+              "Status",
+              "Notes",
+              "Actions",
+            ].map((header) => (
+              <th
+                key={header}
+                className="text-left font-normal p-2 whitespace-nowrap"
+              >
+                {header}
+              </th>
+            ))}
           </tr>
-        ) : (
-          allGrants.map((grant: Grant) => (
-            <tr
-              key={grant.grantId}
-              className="border-b-[0.25px] border-indigo-900/80 hover:bg-indigo-800/10"
-            >
-              <td>{grant.title}</td>
-              <td>{grant.category}</td>
-              <td>{new Date(grant.expirationDate).toLocaleDateString()}</td>
-              <td>{getDaysLeft(grant.expirationDate)} days</td>
-              <td>{grant.status ?? "-"}</td>
-              <td>{grant.notes ?? ""}</td>
-              <td className="flex gap-2">
-                <button onClick={() => onEditGrant(grant)}>
-                  <MdOutlineCreate size={18} />
-                </button>
-                <button onClick={() => onDeleteGrant(grant.grantId)}>
-                  <MdOutlineDelete size={18} />
-                </button>
+        </thead>
+        <tbody>
+          {allGrants.length === 0 ? (
+            <tr>
+              <td colSpan={7} className="text-center text-gray-500 p-6 italic">
+                No opportunities found.
               </td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ) : (
+            allGrants.map((grant: Grant) => (
+              <tr
+                key={grant.grantId}
+                className="border-b-[0.25px] border-indigo-900/80 hover:bg-indigo-800/10"
+              >
+                <td className="p-2">{grant.title}</td>
+                <td className="p-2">{grant.category}</td>
+                <td className="p-2">
+                  {new Date(grant.expirationDate).toLocaleDateString()}
+                </td>
+                <td className="p-2">
+                  {getDaysLeft(grant.expirationDate)} days
+                </td>
+                <td className="p-2">{grant.status ?? "-"}</td>
+                <td className="p-2">{grant.notes ?? ""}</td>
+                <td className="p-2 flex gap-2">
+                  <button
+                    className="text-indigo-700/60 hover:text-indigo-900"
+                    onClick={() => onEditGrant(grant)}
+                  >
+                    <MdOutlineCreate size={18} />
+                  </button>
+                  <button
+                    className="text-red-600/60 hover:text-red-500"
+                    onClick={() => onDeleteGrant(grant.grantId)}
+                  >
+                    <MdOutlineDelete size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

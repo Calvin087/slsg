@@ -19,48 +19,70 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
         className="bg-white p-6 rounded w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
+        <h2 className="text-2xl mb-4 text-indigo-900/60 text-balance border-b border-gray-400/30">
+          Edit Grant{" "}
+        </h2>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-sm">
-          <label>Title</label>
+          <label htmlFor="title" className="mt-2">
+            Title
+          </label>
           <input
+            id="title"
             value={form.title}
             onChange={(e) => updateField("title", e.target.value)}
-            className="border p-2 rounded"
+            className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
 
-          <label>Source URL</label>
+          <label htmlFor="sourceUrl" className="mt-2">
+            Source URL
+          </label>
           <input
+            id="sourceUrl"
             value={form.sourceUrl}
             onChange={(e) => updateField("sourceUrl", e.target.value)}
-            className="border p-2 rounded"
+            className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
 
-          <label>Category</label>
+          <label htmlFor="category" className="mt-2">
+            Category
+          </label>
           <input
+            id="category"
             value={form.category}
             onChange={(e) => updateField("category", e.target.value)}
-            className="border p-2 rounded"
+            className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
 
-          <label>Deadline</label>
+          <label htmlFor="deadline" className="mt-2">
+            Deadline
+          </label>
           <input
+            id="deadline"
             value={form.expirationDate}
             onChange={(e) => updateField("expirationDate", e.target.value)}
-            className="border p-2 rounded"
+            className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
 
-          <label>Status</label>
+          <label htmlFor="status" className="mt-2">
+            Status
+          </label>
           <input
+            id="status"
             value={form.status}
             onChange={(e) => updateField("status", e.target.value)}
-            className="border p-2 rounded"
+            className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
 
-          <label>Notes</label>
+          <label htmlFor="notes" className="mt-2">
+            Notes
+          </label>
           <textarea
+            id="notes"
             rows={6}
             value={form.notes}
             onChange={(e) => updateField("notes", e.target.value)}
-            className="border p-2 rounded"
+            className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
 
           <div className="flex justify-end gap-2 mt-3">

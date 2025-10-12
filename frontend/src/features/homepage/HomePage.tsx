@@ -29,7 +29,7 @@ const HomePage = () => {
         />
         {editingGrant && (
           <EditGrantModal
-            grant={useEditingGrant}
+            grant={editingGrant}
             onClose={close}
             onSave={updateGrantMutation.mutate}
           />
