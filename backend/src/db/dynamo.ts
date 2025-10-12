@@ -12,6 +12,7 @@ import {
   GrantSchema,
   GrantUpdate,
   GrantUpdateSchema,
+  PublicGrant,
 } from "../schemas/GrantSchema";
 
 const client = new DynamoDBClient({});
@@ -22,36 +23,43 @@ if (!TABLE_NAME) throw new Error("TABLE_NAME not set");
 
 export const DynamoAdapter = {
   putItem: async (grant: Grant) => {
-    const { userSubId, grantId, ...rest } = GrantSchema.parse(grant);
-
-    const item = { PK: userSubId, SK: grantId, ...rest };
+    const grantData = GrantSchema.parse(grant);
 
     await ddb.send(
       new PutCommand({
         TableName: TABLE_NAME,
-        Item: item,
+        Item: grantData,
       }),
     );
-    return item;
+    return grantData;
   },
 
-  getItem: async (PK: string, SK: string): Promise<Grant | undefined> => {
+  getItem: async (
+    userSubId: string,
+    grantId: string,
+  ): Promise<PublicGrant | undefined> => {
     const res = await ddb.send(
-      new GetCommand({ TableName: TABLE_NAME, Key: { PK, SK } }),
+      new GetCommand({ TableName: TABLE_NAME, Key: { userSubId, grantId } }),
     );
-    return res.Item ? GrantSchema.parse(res.Item) : undefined;
+
+    if (!res.Item) return undefined;
+
+    const { userSubId: _, ...rest } = GrantSchema.parse(res.Item);
+    return rest;
   },
 
-  queryByPK: async (PK: string): Promise<Grant[]> => {
+  queryByUserId: async (userSubId: string): Promise<PublicGrant[]> => {
     const res = await ddb.send(
       new QueryCommand({
         TableName: TABLE_NAME,
-        KeyConditionExpression: "PK = :pk",
-        ExpressionAttributeValues: { ":pk": PK },
+        KeyConditionExpression: "userSubId = :userSubId",
+        ExpressionAttributeValues: { ":userSubId": userSubId },
       }),
     );
 
-    return (res.Items || []).map((item) => GrantSchema.parse(item));
+    return (res.Items || [])
+      .map((item) => GrantSchema.parse(item))
+      .map(({ userSubId, ...rest }) => rest);
   },
 
   updateItem: async (
@@ -89,9 +97,9 @@ export const DynamoAdapter = {
     );
   },
 
-  delete: async (PK: string, SK: string) => {
+  delete: async (userSubId: string, grantId: string) => {
     await ddb.send(
-      new DeleteCommand({ TableName: TABLE_NAME, Key: { PK, SK } }),
+      new DeleteCommand({ TableName: TABLE_NAME, Key: { userSubId, grantId } }),
     );
   },
 };
