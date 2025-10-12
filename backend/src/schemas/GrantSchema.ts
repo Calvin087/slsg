@@ -4,7 +4,7 @@ import { z } from "zod";
 export const GrantSchema = z.object({
   userSubId: z.uuid(),
   grantId: z.uuid(),
-  status: z.enum(["Pending", "Approved", "Rejected"]),
+  status: z.enum(["Pending", "Applied", "Approved", "Rejected"]),
   category: z.string(),
   expirationDate: z.iso.datetime(),
   notes: z.string().max(2000),
