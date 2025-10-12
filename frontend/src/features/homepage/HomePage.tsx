@@ -1,14 +1,15 @@
+import EditGrantModal from "../grants/components/EditGrantModal";
 import GrantsTable from "../grants/components/GrantsTable";
+import { useEditingGrant } from "../grants/hooks/useEditGrant";
 import useGrants from "../grants/hooks/useGrants";
 
 const HomePage = () => {
-  const {
-    grantsByUserIdQuery: {
-      data: allGrants,
-      error: allGrantsError,
-      isLoading: allGrantsLoading,
-    },
-  } = useGrants();
+  const { grantsByUserIdQuery, updateGrantMutation, deleteGrantMutation } =
+    useGrants();
+
+  const { data: allGrants, isLoading: allGrantsLoading } = grantsByUserIdQuery;
+
+  const { editingGrant, open, close } = useEditingGrant();
 
   if (allGrantsLoading) return "Loading";
 
@@ -21,9 +22,18 @@ const HomePage = () => {
         <h2 className="text-2xl mb-10 text-indigo-900/60 text-balance">
           Track and manage public funding opportunities
         </h2>
-        <>
-          <GrantsTable allGrants={allGrants} />
-        </>
+        <GrantsTable
+          allGrants={allGrants}
+          onEditGrant={open}
+          onDeleteGrant={deleteGrantMutation.mutate}
+        />
+        {editingGrant && (
+          <EditGrantModal
+            grant={useEditingGrant}
+            onClose={close}
+            onSave={updateGrantMutation.mutate}
+          />
+        )}
       </div>
     </div>
   );

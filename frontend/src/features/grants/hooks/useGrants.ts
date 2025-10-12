@@ -5,6 +5,7 @@ import {
   getGrantsByUserId,
   updateGrant,
 } from "../api/grantsApi";
+import type { Grant } from "../../../types/grants";
 
 const useGrants = () => {
   const queryClient = useQueryClient();
@@ -16,12 +17,12 @@ const useGrants = () => {
   });
 
   const createGrantMutation = useMutation({
-    mutationFn: (grant: any) => createGrant(grant),
+    mutationFn: (grant: Grant) => createGrant(grant),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
   });
 
   const updateGrantMutation = useMutation({
-    mutationFn: (grantUpdate: any) => updateGrant(grantUpdate),
+    mutationFn: (grantUpdate: Grant) => updateGrant(grantUpdate),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
   });
 
