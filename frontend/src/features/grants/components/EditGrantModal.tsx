@@ -1,11 +1,11 @@
 import type { Grant } from "../../../types/grants";
 import { useGrantForm } from "../hooks/useGrantForm";
 
-interface Props {
+type Props = {
   grant: Grant;
   onClose: () => void;
   onSave: (grant: Grant) => void;
-}
+};
 
 const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
   const { form, updateField, handleSubmit } = useGrantForm(grant, onSave);
@@ -33,7 +33,6 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
             onChange={(e) => updateField("title", e.target.value)}
             className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
-
           <label htmlFor="sourceUrl" className="mt-2">
             Source URL
           </label>
@@ -43,7 +42,6 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
             onChange={(e) => updateField("sourceUrl", e.target.value)}
             className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
-
           <label htmlFor="category" className="mt-2">
             Category
           </label>
@@ -53,27 +51,33 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
             onChange={(e) => updateField("category", e.target.value)}
             className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
-
           <label htmlFor="deadline" className="mt-2">
             Deadline
           </label>
           <input
             id="deadline"
-            value={form.expirationDate}
+            type="date"
+            value={form.expirationDate ? form.expirationDate.split("T")[0] : ""}
             onChange={(e) => updateField("expirationDate", e.target.value)}
             className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
-
           <label htmlFor="status" className="mt-2">
             Status
           </label>
-          <input
+          <select
             id="status"
             value={form.status}
             onChange={(e) => updateField("status", e.target.value)}
             className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
-          />
-
+          >
+            {["Pending", "Applied", "Approved", "Rejected", "Reasearching"].map(
+              (status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ),
+            )}
+          </select>{" "}
           <label htmlFor="notes" className="mt-2">
             Notes
           </label>
@@ -84,7 +88,6 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
             onChange={(e) => updateField("notes", e.target.value)}
             className="border border-gray-400/40 p-2 rounded bg-gray-400/10 text-black/80"
           />
-
           <div className="flex justify-end gap-2 mt-3">
             <button
               type="button"

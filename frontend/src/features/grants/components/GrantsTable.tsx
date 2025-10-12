@@ -2,11 +2,11 @@ import { MdOutlineCreate, MdOutlineDelete } from "react-icons/md";
 import { useGrantTable } from "../hooks/useGrantsTable";
 import type { Grant } from "../../../types/grants";
 
-interface Props {
+type Props = {
   allGrants: Grant[];
   onEditGrant: (grant: Grant) => void;
   onDeleteGrant: (grantId: string) => void;
-}
+};
 
 const GrantsTable = ({ allGrants, onEditGrant, onDeleteGrant }: Props) => {
   const { getDaysLeft } = useGrantTable();
@@ -42,37 +42,40 @@ const GrantsTable = ({ allGrants, onEditGrant, onDeleteGrant }: Props) => {
               </td>
             </tr>
           ) : (
-            allGrants.map((grant: Grant) => (
-              <tr
-                key={grant.grantId}
-                className="border-b-[0.25px] border-indigo-900/80 hover:bg-indigo-800/10"
-              >
-                <td className="p-2">{grant.title}</td>
-                <td className="p-2">{grant.category}</td>
-                <td className="p-2">
-                  {new Date(grant.expirationDate).toLocaleDateString()}
-                </td>
-                <td className="p-2">
-                  {getDaysLeft(grant.expirationDate)} days
-                </td>
-                <td className="p-2">{grant.status ?? "-"}</td>
-                <td className="p-2">{grant.notes ?? ""}</td>
-                <td className="p-2 flex gap-2">
-                  <button
-                    className="text-indigo-700/60 hover:text-indigo-900"
-                    onClick={() => onEditGrant(grant)}
-                  >
-                    <MdOutlineCreate size={18} />
-                  </button>
-                  <button
-                    className="text-red-600/60 hover:text-red-500"
-                    onClick={() => onDeleteGrant(grant.grantId)}
-                  >
-                    <MdOutlineDelete size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))
+            allGrants.map((grant: Grant) => {
+              const daysLeft = getDaysLeft(grant.expirationDate);
+              return (
+                <tr
+                  key={grant.grantId}
+                  className="border-b-[0.25px] border-indigo-900/80 hover:bg-indigo-800/10"
+                >
+                  <td className="p-2">{grant.title}</td>
+                  <td className="p-2">{grant.category}</td>
+                  <td className="p-2">
+                    {new Date(grant.expirationDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-2">
+                    {daysLeft <= 0 ? "Expired" : `${daysLeft}`}
+                  </td>
+                  <td className="p-2">{grant.status ?? "-"}</td>
+                  <td className="p-2">{grant.notes ?? ""}</td>
+                  <td className="p-2 flex gap-2">
+                    <button
+                      className="text-indigo-700/60 hover:text-indigo-900"
+                      onClick={() => onEditGrant(grant)}
+                    >
+                      <MdOutlineCreate size={18} />
+                    </button>
+                    <button
+                      className="text-red-600/60 hover:text-red-500"
+                      onClick={() => onDeleteGrant(grant.grantId)}
+                    >
+                      <MdOutlineDelete size={18} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
