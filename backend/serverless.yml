@@ -12,6 +12,17 @@ provider:
   environment:
     TABLE_NAME: ${self:service}-grants-${self:provider.stage} #TODO: slsbackend-x-dev/staging/prod need to add options
     USER_POOL_ID: !Ref CognitoUserPool
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:Query
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: !GetAtt GrantsTable.Arn
 
 custom:
   corsSettings:
@@ -33,13 +44,6 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-    iam:
-      role:
-        statements:
-          - Effect: Allow
-            Action:
-              - dynamodb:GetItem
-            Resource: !GetAtt GrantsTable.Arn
 
   getGrantsByUserId:
     handler: src/features/grants/lambdas/getGrantsByUserId.handler
@@ -52,13 +56,6 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-    iam:
-      role:
-        statements:
-          - Effect: Allow
-            Action:
-              - dynamodb:Query
-            Resource: !GetAtt GrantsTable.Arn
 
   createGrant:
     handler: src/features/grants/lambdas/createGrant.handler
@@ -71,13 +68,6 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-    iam:
-      role:
-        statements:
-          - Effect: Allow
-            Action:
-              - dynamodb:PutItem
-            Resource: !GetAtt GrantsTable.Arn
 
   updateGrant:
     handler: src/features/grants/lambdas/updateGrant.handler
@@ -90,13 +80,6 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-    iam:
-      role:
-        statements:
-          - Effect: Allow
-            Action:
-              - dynamodb:UpdateItem
-            Resource: !GetAtt GrantsTable.Arn
 
   deleteGrant:
     handler: src/features/grants/lambdas/deleteGrant.handler
@@ -109,13 +92,6 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-    iam:
-      role:
-        statements:
-          - Effect: Allow
-            Action:
-              - dynamodb:DeleteItem
-            Resource: !GetAtt GrantsTable.Arn
 
 resources:
   Resources:
