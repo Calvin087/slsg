@@ -1,3 +1,12 @@
+<iframe
+  width="100%"
+  height="500"
+  src="https://www.youtube.com/embed/H7bbRA6_z8w"
+  title="YouTube video player"
+  frameborder="0"
+  allowfullscreen
+></iframe>
+
 ## Using the Live Project
 
 - The test page can be viewed at <https://slsg.pages.dev/>
@@ -24,6 +33,7 @@
 - Run `npm run dev` to run the dev build
 
 ### Workflow
+
 <img width="1254" height="1118" alt="Screenshot 2025-10-13 at 11 40 32" src="https://github.com/user-attachments/assets/26573257-88be-4d8c-b0ea-11a0e1f99e31" />
 
 ## Conditions
@@ -38,8 +48,8 @@
 
 - [x] Build the CI/CD pipeline to support multi-stage deployments e.g. dev, prod
 
-- [ ] The template should be fully working and documented
+- [x] The template should be fully working and documented
 
-- [ ] A public GitHub repository must be shared with frequent commits
+- [x] A public GitHub repository must be shared with frequent commits
 
-- [ ] A video should be recorded (<www.loom.com>) of you talking over the application code, IAC, and any additional areas you want to highlight in your solution to demonstrate additional skills
+- [x] A video should be recorded (<www.loom.com>) of you talking over the application code, IAC, and any additional areas you want to highlight in your solution to demonstrate additional skills
