@@ -1,11 +1,5 @@
-<iframe
-  width="100%"
-  height="500"
-  src="https://www.youtube.com/embed/H7bbRA6_z8w"
-  title="YouTube video player"
-  frameborder="0"
-  allowfullscreen
-></iframe>
+# Youtube video explainer
+https://youtu.be/H7bbRA6_z8w
 
 ## Using the Live Project
 
