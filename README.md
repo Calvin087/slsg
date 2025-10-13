@@ -1,6 +1,31 @@
-## Things I'd Like To Fix
+## Using the Live Project
 
-- [ ] create a wrapper for cors allowed origins
+- The test page can be viewed at <https://slsg.pages.dev/>
+- UserName: `calvint`
+- Pass: `rfbwEp6E!CmNDbCcUi`
+
+## Building the project
+
+### Backend
+
+- cd into backend, run `npm i`
+- `sls deploy --aws-profile yourprofile` to deploy the stack
+- get cognito values from aws USER_POOL_ID and CLIENT_ID
+- Add values to .env file in frontend
+
+### Frontend
+
+- cd into frontend, run `npm i`
+- Use Node v 22+
+- Update .env file with
+  - VITE_AWS_REST_API
+  - VITE_AWS_COGNITO_POOL_ID
+  - VITE_AWS_COGNITO_CLIENT_ID
+- Run `npm run dev` to run the dev build
+
+### Workflow
+
+- SCREENSHOT OF WORKFLOW
 
 ## Conditions
 
@@ -12,7 +37,7 @@
 
 - [x] There should be 4-5 lambdas that include the following CRUD functionality (Create, Read, Update, Delete) \*don't use service proxy integration directly to DynamoDB from API Gateway
 
-- [ ] Build the CI/CD pipeline to support multi-stage deployments e.g. dev, prod
+- [x] Build the CI/CD pipeline to support multi-stage deployments e.g. dev, prod
 
 - [ ] The template should be fully working and documented
 
