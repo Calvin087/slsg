@@ -35,7 +35,7 @@ const updateGrant = async (
     await DynamoAdapter.updateItem(userSubId, grantId, updateData);
 
     return {
-      statusCode: 204,
+      statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,

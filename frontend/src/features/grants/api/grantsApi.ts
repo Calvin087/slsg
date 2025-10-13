@@ -56,11 +56,10 @@ export const createGrant = async (grant: Grant) => {
   return response.json();
 };
 
-// TODO: Working and refetching mutated data
+// TODO: Working and refetching mutated data on 200 not 204
 export const updateGrant = async (grantUpdate: Grant) => {
   const { jwt } = await getJwt();
   const { grantId } = grantUpdate;
-  console.log(grantUpdate);
 
   const response = await fetch(`${restApi}/grants/${grantId}`, {
     method: "PUT",

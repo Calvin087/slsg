@@ -17,19 +17,26 @@ const useGrants = () => {
 
   const createGrantMutation = useMutation({
     mutationFn: (grant: Grant) => createGrant(grant),
-    onMutate: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["grants"] });
+      queryClient.refetchQueries({ queryKey: ["grants"] });
+    },
   });
 
   const updateGrantMutation = useMutation({
     mutationFn: (grantUpdate: Grant) => updateGrant(grantUpdate),
-    onMutate: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["grants"] });
+      queryClient.refetchQueries({ queryKey: ["grants"] });
     },
   });
 
   const deleteGrantMutation = useMutation({
     mutationFn: (grantId: string) => deleteGrant(grantId),
-    onMutate: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["grants"] });
+      queryClient.refetchQueries({ queryKey: ["grants"] });
+    },
   });
 
   return {
