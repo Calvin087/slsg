@@ -17,7 +17,7 @@ const createGrant = async (
     };
   }
 
-  const grantId = randomUUID();
+  const grantId = randomUUID(); // generate uuid
 
   try {
     const grantBody = JSON.parse(event.body);
@@ -36,7 +36,7 @@ const createGrant = async (
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify({ message: "Grant Created" }),
+      body: JSON.stringify({ message: "Grant item Created" }),
     };
   } catch (error) {
     return {
