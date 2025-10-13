@@ -24,8 +24,7 @@
 - Run `npm run dev` to run the dev build
 
 ### Workflow
-
-- SCREENSHOT OF WORKFLOW
+<img width="1254" height="1118" alt="Screenshot 2025-10-13 at 11 40 32" src="https://github.com/user-attachments/assets/26573257-88be-4d8c-b0ea-11a0e1f99e31" />
 
 ## Conditions
 
