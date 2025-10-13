@@ -30,12 +30,12 @@ const updateGrant = async (
 
     const updateData: GrantUpdate = GrantUpdateSchema.parse(updates);
 
-    if (!Object.keys(updates).length) throw new Error("Nothing to update");
+    if (!Object.keys(updateData).length) throw new Error("Nothing to update");
 
     await DynamoAdapter.updateItem(userSubId, grantId, updateData);
 
     return {
-      statusCode: 204,
+      statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,

@@ -15,7 +15,7 @@ const deleteGrant = async (
     await DynamoAdapter.delete(userSubId, grantId);
 
     return {
-      statusCode: 204,
+      statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,

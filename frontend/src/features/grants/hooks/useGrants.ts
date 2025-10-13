@@ -5,6 +5,7 @@ import {
   getGrantsByUserId,
   updateGrant,
 } from "../api/grantsApi";
+import type { Grant } from "../../../types/grants";
 
 const useGrants = () => {
   const queryClient = useQueryClient();
@@ -12,22 +13,30 @@ const useGrants = () => {
   const grantsByUserIdQuery = useQuery({
     queryKey: ["grants"],
     queryFn: getGrantsByUserId,
-    staleTime: 1000 * 60 * 5,
   });
 
   const createGrantMutation = useMutation({
-    mutationFn: (grant: any) => createGrant(grant),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
+    mutationFn: (grant: Grant) => createGrant(grant),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["grants"] });
+      queryClient.refetchQueries({ queryKey: ["grants"] });
+    },
   });
 
   const updateGrantMutation = useMutation({
-    mutationFn: (grantUpdate: any) => updateGrant(grantUpdate),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
+    mutationFn: (grantUpdate: Grant) => updateGrant(grantUpdate),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["grants"] });
+      queryClient.refetchQueries({ queryKey: ["grants"] });
+    },
   });
 
   const deleteGrantMutation = useMutation({
     mutationFn: (grantId: string) => deleteGrant(grantId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["grants"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["grants"] });
+      queryClient.refetchQueries({ queryKey: ["grants"] });
+    },
   });
 
   return {
