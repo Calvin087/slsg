@@ -36,7 +36,7 @@ const createGrant = async (
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify({ message: "Grant item Created" }),
+      body: JSON.stringify({ message: "Grant item Created in db" }),
     };
   } catch (error) {
     return {
