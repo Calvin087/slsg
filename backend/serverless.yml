@@ -25,14 +25,6 @@ provider:
             - dynamodb:DeleteItem
           Resource: !GetAtt GrantsTable.Arn
 
-custom:
-  corsSettings:
-    origin: http://localhost:5173,https://notsurewhatyouareyet.com
-    headers:
-      - Content-Type
-      - Authorization
-    allowCredentials: true
-
 functions:
   getGrant:
     handler: src/features/grants/lambdas/getGrant.handler
@@ -40,7 +32,7 @@ functions:
       - http:
           path: /grants/{id}
           method: get
-          cors: ${self:custom.corsSettings}
+          cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -52,7 +44,7 @@ functions:
       - http:
           path: /users/{userId}/grants
           method: get
-          cors: ${self:custom.corsSettings}
+          cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -64,7 +56,7 @@ functions:
       - http:
           path: /grants
           method: post
-          cors: ${self:custom.corsSettings}
+          cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -76,7 +68,7 @@ functions:
       - http:
           path: /grants/{id}
           method: put
-          cors: ${self:custom.corsSettings}
+          cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
@@ -88,7 +80,7 @@ functions:
       - http:
           path: /grants/{id}
           method: delete
-          cors: ${self:custom.corsSettings}
+          cors: true
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
