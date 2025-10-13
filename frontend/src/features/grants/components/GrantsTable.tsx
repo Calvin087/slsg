@@ -6,13 +6,25 @@ type Props = {
   allGrants: Grant[];
   onEditGrant: (grant: Grant) => void;
   onDeleteGrant: (grantId: string) => void;
+  onCreateGrant: () => void;
 };
 
-const GrantsTable = ({ allGrants, onEditGrant, onDeleteGrant }: Props) => {
+const GrantsTable = ({
+  allGrants,
+  onCreateGrant,
+  onEditGrant,
+  onDeleteGrant,
+}: Props) => {
   const { getDaysLeft } = useGrantTable();
 
   return (
     <div className="overflow-x-auto rounded-t-sm">
+      <button
+        onClick={onCreateGrant}
+        className="bg-indigo-900/50 mb-6 text-white px-3 py-1 rounded text-sm cursor-pointer hover:bg-indigo-700"
+      >
+        + New Grant
+      </button>{" "}
       <table className="w-full border-collapse text-sm">
         <thead className="bg-indigo-50 text-indigo-900">
           <tr className="border-b-[0.25px] border-indigo-900/80 text-xs">
@@ -68,7 +80,7 @@ const GrantsTable = ({ allGrants, onEditGrant, onDeleteGrant }: Props) => {
                     </button>
                     <button
                       className="text-red-600/60 hover:text-red-500"
-                      onClick={() => onDeleteGrant(grant.grantId)}
+                      onClick={() => onDeleteGrant(grant.grantId!)}
                     >
                       <MdOutlineDelete size={18} />
                     </button>

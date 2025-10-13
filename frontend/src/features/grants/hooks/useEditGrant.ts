@@ -1,16 +1,39 @@
 import { useState } from "react";
 import type { Grant } from "../../../types/grants";
 
-export const useEditingGrant = () => {
-  const [editingGrant, setEditingGrant] = useState<any | null>(null);
+type EditMode = "create" | "edit";
 
-  const open = (grant: Grant) => setEditingGrant(grant);
-  const close = () => setEditingGrant(null);
+export const useEditingGrant = () => {
+  const [grant, setGrant] = useState<Grant | null>(null);
+  const [mode, setMode] = useState<EditMode>("create");
+
+  const open = (grantToEdit?: Grant) => {
+    if (grantToEdit) {
+      setGrant(grantToEdit);
+      setMode("edit");
+    } else {
+      setGrant({
+        title: "",
+        sourceUrl: "",
+        category: "",
+        expirationDate: new Date().toISOString(),
+        status: "Pending",
+        notes: "",
+      });
+      setMode("create");
+    }
+  };
+
+  const close = () => {
+    setGrant(null);
+    setMode("create");
+  };
 
   return {
-    editingGrant,
+    grant,
+    mode,
     open,
     close,
-    setEditingGrant,
+    setGrant,
   };
 };

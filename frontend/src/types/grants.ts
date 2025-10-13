@@ -1,5 +1,5 @@
 export type Grant = {
-  grantId: string;
+  grantId?: string;
   title: string;
   sourceUrl: string;
   category: string;

@@ -4,12 +4,16 @@ import { useEditingGrant } from "../grants/hooks/useEditGrant";
 import useGrants from "../grants/hooks/useGrants";
 
 const HomePage = () => {
-  const { grantsByUserIdQuery, updateGrantMutation, deleteGrantMutation } =
-    useGrants();
+  const {
+    grantsByUserIdQuery,
+    updateGrantMutation,
+    createGrantMutation,
+    deleteGrantMutation,
+  } = useGrants();
 
   const { data: allGrants, isLoading: allGrantsLoading } = grantsByUserIdQuery;
 
-  const { editingGrant, open, close } = useEditingGrant();
+  const { grant, mode, open, close } = useEditingGrant();
 
   return (
     <div className="text-black/60 bg-[#f8f6f1] min-h-screen px-4 sm:px-6 lg:px-8 pt-20">
@@ -28,12 +32,17 @@ const HomePage = () => {
               allGrants={allGrants}
               onEditGrant={open}
               onDeleteGrant={deleteGrantMutation.mutate}
+              onCreateGrant={() => open()}
             />
-            {editingGrant && (
+            {grant && (
               <EditGrantModal
-                grant={editingGrant}
+                grant={grant}
                 onClose={close}
-                onSave={updateGrantMutation.mutate}
+                onSave={(data) =>
+                  mode === "create"
+                    ? createGrantMutation.mutate(data)
+                    : updateGrantMutation.mutate(data)
+                }
               />
             )}
           </>

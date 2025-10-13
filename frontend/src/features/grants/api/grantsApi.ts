@@ -80,6 +80,7 @@ export const updateGrant = async (grantUpdate: Grant) => {
   return response.json();
 };
 
+// TODO: Working
 export const deleteGrant = async (grantId: string) => {
   const { jwt } = await getJwt();
   const response = await fetch(`${restApi}/grants/${grantId}`, {
