@@ -23,7 +23,13 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
           Edit Grant{" "}
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-sm">
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+            onClose();
+          }}
+          className="flex flex-col gap-3 text-sm"
+        >
           <label htmlFor="title" className="mt-2">
             Title
           </label>
@@ -92,13 +98,13 @@ const EditGrantModal = ({ grant, onClose, onSave }: Props) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1 text-sm"
+              className="px-3 py-1 text-sm cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-indigo-600 text-white px-3 py-1 text-sm rounded"
+              className="bg-indigo-600 text-white px-3 py-1 text-sm rounded cursor-pointer"
             >
               Save
             </button>

@@ -44,7 +44,7 @@ export const createGrant = async (grant: Grant) => {
       "Content-Type": "application/json",
     },
 
-    body: JSON.stringify({ grant }),
+    body: JSON.stringify(grant),
   });
 
   if (!response.ok) {
@@ -56,9 +56,12 @@ export const createGrant = async (grant: Grant) => {
   return response.json();
 };
 
+// TODO: Working and refetching mutated data
 export const updateGrant = async (grantUpdate: Grant) => {
   const { jwt } = await getJwt();
   const { grantId } = grantUpdate;
+  console.log(grantUpdate);
+
   const response = await fetch(`${restApi}/grants/${grantId}`, {
     method: "PUT",
     headers: {
@@ -66,7 +69,7 @@ export const updateGrant = async (grantUpdate: Grant) => {
       "Content-Type": "application/json",
     },
 
-    body: JSON.stringify({ grantUpdate }),
+    body: JSON.stringify(grantUpdate),
   });
 
   if (!response.ok) {

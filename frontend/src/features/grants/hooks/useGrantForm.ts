@@ -13,7 +13,11 @@ export const useGrantForm = (
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(form);
+    const isoDate = form.expirationDate.includes("T")
+      ? form.expirationDate
+      : new Date(form.expirationDate).toISOString();
+
+    onSave({ ...form, expirationDate: isoDate });
   };
 
   return { form, updateField, handleSubmit, setForm };
