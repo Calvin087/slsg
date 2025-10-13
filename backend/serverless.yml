@@ -5,6 +5,8 @@ service: slsbackend
 provider:
   name: aws
   runtime: nodejs20.x
+  logs:
+    restApi: false
   region: eu-central-1
   stage: ${opt:stage, 'dev'}
   logRetentionInDays: 7
