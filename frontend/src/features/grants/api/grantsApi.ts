@@ -20,6 +20,7 @@ export const getGrantsByUserId = async () => {
   const response = await fetch(`${restApi}/users/${userSubId}/grants`, {
     method: "GET",
     headers: {
+      'something else here sdfl':"",
       Authorization: `Bearer ${jwt}`,
       "Content-Type": "application/json",
     },
